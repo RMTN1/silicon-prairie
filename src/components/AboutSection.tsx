@@ -58,17 +58,17 @@ const AboutSection = () => {
           </motion.span>
           
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-foreground">Terraforming the </span>
+            <span className="text-foreground">Terraforming the Midwest </span>
             <span className="text-gradient-wheat">Midwest</span>
             <span className="text-foreground"> with </span>
             <span className="text-gradient-neon">AI</span>
           </h2>
           
           <p className="text-lg text-muted-foreground leading-relaxed">
-            For too long, the heartland has been overlooked by the tech revolution. 
-            Silicon Prairie is changing that narrative—one neural network at a time. 
-            We're not just bringing AI to Nebraska; we're cultivating a new kind of 
-            innovation that grows from the ground up.
+          The Silicon Prairie isn't just a nickname—it's a blueprint. 
+          We connect the hidden nodes of the Midwest:
+          the Funders fueling growth, the Developers writing the code, and the Businesses ready to evolve.
+          Our mission is simple: To integrate Artificial Intelligence into the soil of the heartland.
           </p>
         </motion.div>
 
