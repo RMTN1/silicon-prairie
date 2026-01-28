@@ -18,13 +18,10 @@ const Navigation = () => {
             whileHover={{ scale: 1.02 }}
           >
             <div className="relative">
-              <div className="h-10 w-10 rounded-lg gradient-neon flex items-center justify-center">
-                <span className="font-display font-bold text-primary-foreground text-lg">SP</span>
-              </div>
-              <div className="absolute inset-0 rounded-lg gradient-neon opacity-50 blur-md -z-10" />
+              <img src="/favicon.svg" alt="Wheat Logo" className="h-10 w-10 object-contain" />
             </div>
-            <span className="font-display font-semibold text-xl text-foreground">
-              Silicon<span className="text-gradient-neon">Prairie</span>
+            <span className="font-display font-semibold text-xl">
+              <span className="text-[#60a5fa]">Silicon</span> <span className="text-[#D4AF37]">Prairie</span>
             </span>
           </motion.div>
 
