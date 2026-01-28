@@ -164,14 +164,46 @@ const JoinSection = () => {
                       />
                     </div>
 
-                    <div className="space-y-2">
-          <label className="text-sm font-medium">I am a...</label>
-          <select className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground">
-            <option>Citizen</option>
-            <option>Developer</option>
-            <option>Investor</option>
-          </select>
-        </div>
+                    {/* User Type Selection */}
+                    <div className="space-y-3">
+                      <Label className="text-foreground">I am a...</Label>
+                      <RadioGroup
+                        value={userType}
+                        onValueChange={setUserType}
+                        className="grid grid-cols-1 gap-3"
+                      >
+                        {userTypes.map((type) => (
+                          <Label
+                            key={type.value}
+                            htmlFor={type.value}
+                            className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${
+                              userType === type.value
+                                ? "border-primary bg-primary/5"
+                                : "border-border/50 hover:border-border bg-muted/30"
+                            }`}
+                          >
+                            <RadioGroupItem value={type.value} id={type.value} className="sr-only" />
+                            <div className={`p-2 rounded-lg ${
+                              userType === type.value ? "bg-primary/10" : "bg-muted"
+                            }`}>
+                              <type.icon className={`w-5 h-5 ${
+                                userType === type.value ? "text-primary" : "text-muted-foreground"
+                              }`} />
+                            </div>
+                            <div className="flex-1">
+                              <div className={`font-medium ${
+                                userType === type.value ? "text-foreground" : "text-foreground/80"
+                              }`}>
+                                {type.label}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {type.description}
+                              </div>
+                            </div>
+                          </Label>
+                        ))}
+                      </RadioGroup>
+                    </div>
 
                     {/* Submit Button */}
                     <Button
