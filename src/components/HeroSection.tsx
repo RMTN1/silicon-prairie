@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Zap } from "lucide-react";
 import InteractiveNode from "./InteractiveNode";
+import heroPrairie from "@/assets/hero-prairie.jpg";
 
 const nodes = [
   { type: "funder" as const, x: 20, y: 35, label: "AgriVenture Capital", delay: 0.8 },
@@ -17,14 +18,17 @@ const nodes = [
 const HeroSection = () => {
   return (
     <section id="hero" className="relative min-h-screen overflow-hidden">
+      {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         <img
-          src="/hero-prairie.jpg"
+          src={heroPrairie}
           alt="Digital Prairie"
           className="w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 gradient-hero-overlay" />
         <div className="absolute inset-0 grid-overlay opacity-50" />
+        
+        {/* Scan line effect */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div
             className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"
@@ -34,10 +38,13 @@ const HeroSection = () => {
         </div>
       </div>
 
+      {/* Interactive Nodes */}
       <div className="absolute inset-0 top-32">
         {nodes.map((node, index) => (
           <InteractiveNode key={index} {...node} />
         ))}
+        
+        {/* Connection lines between nodes */}
         <svg className="absolute inset-0 pointer-events-none" style={{ width: '100%', height: '100%' }}>
           <defs>
             <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -46,25 +53,42 @@ const HeroSection = () => {
               <stop offset="100%" stopColor="hsl(185 100% 50% / 0.1)" />
             </linearGradient>
           </defs>
-          {[
-            {x1:"22%", y1:"37%", x2:"44%", y2:"28%", d:1.5},
-            {x1:"47%", y1:"28%", x2:"68%", y2:"42%", d:1.7},
-            {x1:"32%", y1:"57%", x2:"53%", y2:"62%", d:1.9},
-            {x1:"57%", y1:"62%", x2:"78%", y2:"57%", d:2.1}
-          ].map((line, i) => (
-            <motion.line
-              key={i}
-              x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2}
-              stroke="url(#lineGradient)"
-              strokeWidth="1"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ delay: line.d, duration: 1 }}
-            />
-          ))}
+          <motion.line
+            x1="22%" y1="37%" x2="44%" y2="28%"
+            stroke="url(#lineGradient)"
+            strokeWidth="1"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ delay: 1.5, duration: 1 }}
+          />
+          <motion.line
+            x1="47%" y1="28%" x2="68%" y2="42%"
+            stroke="url(#lineGradient)"
+            strokeWidth="1"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ delay: 1.7, duration: 1 }}
+          />
+          <motion.line
+            x1="32%" y1="57%" x2="53%" y2="62%"
+            stroke="url(#lineGradient)"
+            strokeWidth="1"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ delay: 1.9, duration: 1 }}
+          />
+          <motion.line
+            x1="57%" y1="62%" x2="78%" y2="57%"
+            stroke="url(#lineGradient)"
+            strokeWidth="1"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ delay: 2.1, duration: 1 }}
+          />
         </svg>
       </div>
 
+      {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-end min-h-screen pb-24 px-6">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -72,6 +96,7 @@ const HeroSection = () => {
           transition={{ delay: 0.3, duration: 0.8 }}
           className="text-center max-w-4xl"
         >
+          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -84,27 +109,41 @@ const HeroSection = () => {
             </span>
           </motion.div>
 
+          {/* Main Headline */}
           <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
             className="font-display text-5xl md:text-7xl font-bold mb-6 leading-tight"
           >
             <span className="text-foreground">Where </span>
-            <span style={{ color: '#D4AF37' }}>Golden Fields</span>
+            <span className="text-[#D4AF37]">Golden Fields</span>
             <br />
             <span className="text-foreground">Meet </span>
-            <span style={{ color: '#60a5fa' }}>Digital Futures</span>
+            <span className="text-[#60a5fa]">Digital Futures</span>
           </motion.h1>
 
+          {/* Subtitle */}
           <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
           >
             Silicon Prairie connects funders, developers, and businesses to terraform 
             the heartland into America's next AI innovation hub.
           </motion.p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0, duration: 0.8 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
             <Button
               size="lg"
-              className="bg-[#60a5fa] text-white font-semibold px-8 py-6 text-lg hover:opacity-90 transition-opacity"
+              className="gradient-neon text-primary-foreground font-semibold px-8 py-6 text-lg hover:opacity-90 transition-opacity shadow-glow-cyan"
               onClick={() => document.getElementById('join')?.scrollIntoView({ behavior: 'smooth' })}
             >
               Join the Network
@@ -112,12 +151,29 @@ const HeroSection = () => {
             <Button
               size="lg"
               variant="outline"
-              className="border-white/20 text-white px-8 py-6 text-lg"
+              className="border-foreground/20 text-foreground hover:bg-foreground/5 px-8 py-6 text-lg"
               onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
             >
               Explore the Mission
             </Button>
-          </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        >
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="flex flex-col items-center gap-2 text-muted-foreground"
+          >
+            <span className="text-xs uppercase tracking-widest">Discover</span>
+            <ArrowDown className="w-4 h-4" />
+          </motion.div>
         </motion.div>
       </div>
     </section>
