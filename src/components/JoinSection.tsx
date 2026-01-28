@@ -164,35 +164,14 @@ const JoinSection = () => {
                       />
                     </div>
 
-                    {/* User Type Selection */}
-                    <div className="space-y-3">
-                      <Label className="text-foreground">I am a...</Label>
-                      <RadioGroup
-                        value={userType}
-                        onValueChange={setUserType}
-                        className="grid grid-cols-3 gap-3"
-                      >
-                        {userTypes.map((type) => (
-                          <Label
-                            key={type.value}
-                            htmlFor={type.value}
-                            className={`
-                              flex flex-col items-center gap-2 p-4 rounded-xl border-2 cursor-pointer transition-all duration-300
-                              ${userType === type.value 
-                                ? 'border-primary bg-primary/10' 
-                                : 'border-border/50 hover:border-primary/30 bg-muted/30'
-                              }
-                            `}
-                          >
-                            <RadioGroupItem value={type.value} id={type.value} className="sr-only" />
-                            <type.icon className={`h-6 w-6 ${userType === type.value ? 'text-primary' : 'text-muted-foreground'}`} />
-                            <span className={`text-sm font-medium ${userType === type.value ? 'text-primary' : 'text-foreground'}`}>
-                              {type.label}
-                            </span>
-                          </Label>
-                        ))}
-                      </RadioGroup>
-                    </div>
+                    <div className="space-y-2">
+          <label className="text-sm font-medium">I am a...</label>
+          <select className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground">
+            <option>Business</option>
+            <option>Developer</option>
+            <option>Funder</option>
+          </select>
+        </div>
 
                     {/* Submit Button */}
                     <Button
