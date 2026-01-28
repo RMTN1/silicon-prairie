@@ -83,7 +83,7 @@ const JoinSection = () => {
               transition={{ duration: 0.8 }}
             >
               <span className="inline-block text-primary font-medium mb-4 tracking-wider uppercase text-sm">
-                Join the Revolution
+                Join the Network
               </span>
               
               <h2 className="font-display text-4xl md:text-5xl font-bold mb-6 leading-tight">
@@ -92,9 +92,7 @@ const JoinSection = () => {
               </h2>
               
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Whether you're funding the future, building it, or ready to adopt AI 
-                solutions, there's a place for you in Silicon Prairie. Join our 
-                growing ecosystem and help us reshape what's possible in the heartland.
+                The grid is growing. Whether you are a Funder, Developer, or Business—connect to the Silicon Prairie ecosystem here.
               </p>
 
               {/* Benefits */}
