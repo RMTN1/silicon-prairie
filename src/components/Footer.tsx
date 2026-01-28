@@ -10,7 +10,8 @@ const Footer = () => {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-4 gap-10 mb-12">
             {/* Brand */}
-            <div className="flex items-center gap-3 mb-4">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
                 <img src="/favicon.svg" alt="Wheat Logo" className="h-10 w-10 object-contain" />
                 <span className="font-display font-semibold text-xl">
                   <span className="text-[#60a5fa]">Silicon</span> <span className="text-[#D4AF37]">Prairie</span>
