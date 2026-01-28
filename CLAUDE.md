@@ -37,7 +37,7 @@ The project is not just a network, but a suite of deployed AI solutions:
 * **Deployment:** Vercel.
 
 ### Data & Backend
-* **BaaS:**
+* **BaaS:** Supabase (Recommended for Auth, PostgreSQL, & Realtime)
 * **State Management:**
 * **API Schema:**
 
