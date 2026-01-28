@@ -118,10 +118,10 @@ const HeroSection = () => {
             className="font-display text-5xl md:text-7xl font-bold mb-6 leading-tight"
           >
             <span className="text-foreground">Where </span>
-            <span className="text-gradient-wheat">Golden Fields</span>
+            <span className="text-[#D4AF37]">Golden Fields</span>
             <br />
             <span className="text-foreground">Meet </span>
-            <span className="text-gradient-neon">Digital Futures</span>
+            <span className="text-[#60a5fa]">Digital Futures</span>
           </motion.h1>
 
           {/* Subtitle */}
