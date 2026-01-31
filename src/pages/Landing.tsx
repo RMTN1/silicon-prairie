@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Compass, Zap, Sparkles } from "lucide-react";
 import heroPrairie from "@/assets/hero-prairie.jpg";
@@ -11,37 +11,191 @@ const GOLD_PRAIRIE = "#D4AF37";
 export default function Landing() {
   const [screen, setScreen] = useState<1 | 2>(1);
   const [orbHovered, setOrbHovered] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
+
+  // Track mouse for parallax effect
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({
+        x: e.clientX / window.innerWidth,
+        y: e.clientY / window.innerHeight,
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   const handleOrbClick = () => {
     setScreen(2);
   };
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
+    <div className="relative w-full min-h-screen overflow-hidden bg-[#0a0a0f]">
+      {/* Background Image with Parallax & Breathing Effect */}
+      <motion.div
+        className="absolute inset-0"
+        animate={{
+          scale: [1, 1.02, 1],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        style={{
+          x: (mousePos.x - 0.5) * -20,
+          y: (mousePos.y - 0.5) * -20,
+        }}
+      >
         <img
           src={heroPrairie}
           alt="Prairie landscape"
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover object-center scale-110"
         />
-        {/* Dark gradient overlay for depth */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-[#0a0a0f]/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/60 via-transparent to-transparent" />
+      </motion.div>
+
+      {/* Animated Light Rays from horizon */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <motion.div
+            key={`ray-${i}`}
+            className="absolute bottom-[40%] left-1/2 w-[2px] origin-bottom"
+            style={{
+              height: "60vh",
+              background: `linear-gradient(to top, ${GOLD_PRAIRIE}00, ${GOLD_PRAIRIE}22, ${GOLD_PRAIRIE}00)`,
+              transform: `translateX(-50%) rotate(${-20 + i * 5}deg)`,
+            }}
+            animate={{
+              opacity: [0.2, 0.5, 0.2],
+              scaleY: [0.8, 1, 0.8],
+            }}
+            transition={{
+              duration: 4 + i * 0.5,
+              repeat: Infinity,
+              delay: i * 0.3,
+            }}
+          />
+        ))}
       </div>
 
-      {/* Digital Grid Overlay - creates the "digital futures" effect */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Perspective grid in lower portion */}
+      {/* Animated Cloud/Mist Layer */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none opacity-30"
+        animate={{
+          x: [0, 100, 0],
+        }}
+        transition={{
+          duration: 60,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+        style={{
+          background: `
+            radial-gradient(ellipse 100% 50% at 20% 20%, rgba(255,255,255,0.1), transparent),
+            radial-gradient(ellipse 80% 40% at 70% 30%, rgba(255,255,255,0.08), transparent)
+          `,
+        }}
+      />
+
+      {/* Foreground Wheat Stalks - Swaying Animation */}
+      <div className="absolute bottom-0 left-0 right-0 h-[35%] overflow-hidden pointer-events-none">
+        {Array.from({ length: 80 }).map((_, i) => {
+          const height = 80 + Math.random() * 120;
+          const left = (i / 80) * 100 + (Math.random() - 0.5) * 2;
+          const delay = Math.random() * 2;
+          const duration = 2.5 + Math.random() * 1.5;
+          return (
+            <motion.div
+              key={`wheat-${i}`}
+              className="absolute bottom-0 origin-bottom"
+              style={{
+                left: `${left}%`,
+                width: "3px",
+                height: `${height}px`,
+                background: `linear-gradient(to top, ${GOLD_PRAIRIE}dd, ${GOLD_PRAIRIE}88, ${GOLD_PRAIRIE}44)`,
+                borderRadius: "2px 2px 0 0",
+              }}
+              animate={{
+                rotate: [-3, 3, -3],
+                scaleY: [1, 1.02, 1],
+              }}
+              transition={{
+                duration: duration,
+                repeat: Infinity,
+                delay: delay,
+                ease: "easeInOut",
+              }}
+            >
+              {/* Wheat head */}
+              <div
+                className="absolute -top-2 left-1/2 -translate-x-1/2 w-2 h-4 rounded-full"
+                style={{
+                  background: `radial-gradient(ellipse, ${GOLD_PRAIRIE}, ${GOLD_PRAIRIE}88)`,
+                }}
+              />
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* Floating Pollen/Dust Particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 50 }).map((_, i) => {
+          const size = 2 + Math.random() * 3;
+          const startX = Math.random() * 100;
+          const startY = 30 + Math.random() * 60;
+          const duration = 8 + Math.random() * 12;
+          return (
+            <motion.div
+              key={`particle-${i}`}
+              className="absolute rounded-full"
+              style={{
+                width: size,
+                height: size,
+                left: `${startX}%`,
+                top: `${startY}%`,
+                backgroundColor: i % 3 === 0 ? GOLD_PRAIRIE : "rgba(255,255,255,0.6)",
+                boxShadow: `0 0 ${size * 2}px ${i % 3 === 0 ? GOLD_PRAIRIE : "rgba(255,255,255,0.3)"}`,
+              }}
+              animate={{
+                x: [0, 30 + Math.random() * 40, 0],
+                y: [0, -20 - Math.random() * 30, 0],
+                opacity: [0, 0.8, 0],
+                scale: [0.5, 1, 0.5],
+              }}
+              transition={{
+                duration: duration,
+                repeat: Infinity,
+                delay: Math.random() * 5,
+                ease: "easeInOut",
+              }}
+            />
+          );
+        })}
+      </div>
+
+      {/* Gradient Overlays for Depth */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-[#0a0a0f]/30 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/50 via-transparent to-transparent" />
+
+      {/* Digital Grid Overlay */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[200%] h-[60%]"
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[200%] h-[50%]"
           style={{
             perspective: "500px",
             perspectiveOrigin: "50% 0%",
           }}
         >
-          <div
-            className="w-full h-full opacity-30"
+          <motion.div
+            className="w-full h-full"
+            animate={{
+              opacity: [0.2, 0.35, 0.2],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+            }}
             style={{
               transform: "rotateX(60deg)",
               backgroundImage: `
@@ -65,32 +219,34 @@ export default function Landing() {
           animate={{ top: ["0%", "100%"] }}
           transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
         />
+      </div>
 
-        {/* Floating particles */}
-        {Array.from({ length: 30 }).map((_, i) => (
+      {/* Flying Birds Silhouettes */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 5 }).map((_, i) => (
           <motion.div
-            key={i}
-            className="absolute w-1 h-1 rounded-full"
+            key={`bird-${i}`}
+            className="absolute text-black/20"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${50 + Math.random() * 50}%`,
-              backgroundColor: i % 3 === 0 ? GOLD_PRAIRIE : BLUE_SILICON,
-              boxShadow: `0 0 6px ${i % 3 === 0 ? GOLD_PRAIRIE : BLUE_SILICON}`,
+              top: `${15 + i * 8}%`,
+              fontSize: "12px",
             }}
             animate={{
-              y: [-20, 20, -20],
-              opacity: [0.3, 0.8, 0.3],
+              x: ["-10vw", "110vw"],
             }}
             transition={{
-              duration: 3 + Math.random() * 2,
+              duration: 20 + i * 5,
               repeat: Infinity,
-              delay: Math.random() * 2,
+              delay: i * 4,
+              ease: "linear",
             }}
-          />
+          >
+            ◠‿◠
+          </motion.div>
         ))}
       </div>
 
-      {/* Screen 1: Glowing Orb on Horizon */}
+      {/* Screen 1: Glowing Orb */}
       <AnimatePresence mode="wait">
         {screen === 1 && (
           <motion.div
@@ -101,7 +257,7 @@ export default function Landing() {
             transition={{ duration: 0.8 }}
             className="absolute inset-0 flex flex-col items-center justify-center"
           >
-            {/* Orb positioned like sun on horizon */}
+            {/* Orb */}
             <motion.button
               onClick={handleOrbClick}
               onHoverStart={() => setOrbHovered(true)}
@@ -127,10 +283,9 @@ export default function Landing() {
                 }}
               />
 
-              {/* Sparkle icon */}
               <Sparkles className="absolute inset-0 m-auto w-12 h-12 md:w-16 md:h-16 text-white/70" />
 
-              {/* Animated pulse rings */}
+              {/* Pulse rings */}
               <motion.span
                 className="absolute inset-0 rounded-full border-2"
                 style={{ borderColor: orbHovered ? GOLD_PRAIRIE : BLUE_SILICON }}
@@ -193,20 +348,18 @@ export default function Landing() {
             transition={{ duration: 0.8 }}
             className="absolute inset-0 flex flex-col items-center justify-center px-6"
           >
-            {/* Backdrop blur panel */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
               className="relative p-8 md:p-12 rounded-2xl max-w-2xl text-center"
               style={{
-                background: "rgba(10, 10, 15, 0.7)",
+                background: "rgba(10, 10, 15, 0.8)",
                 backdropFilter: "blur(20px)",
                 border: `1px solid ${BLUE_SILICON}33`,
                 boxShadow: `0 0 60px ${BLUE_SILICON}22`,
               }}
             >
-              {/* Glowing corner accents */}
               <div
                 className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 rounded-tl-2xl"
                 style={{ borderColor: BLUE_SILICON }}
@@ -216,7 +369,6 @@ export default function Landing() {
                 style={{ borderColor: GOLD_PRAIRIE }}
               />
 
-              {/* Title */}
               <motion.h1
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -236,7 +388,6 @@ export default function Landing() {
                 Where Golden Fields Meet Digital Futures
               </motion.p>
 
-              {/* CTAs */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
