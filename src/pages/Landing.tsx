@@ -1,16 +1,66 @@
-import { useRef, useState, useEffect, useMemo, Suspense } from "react";
+import { useRef, useState, useEffect, useMemo, Suspense, Component, ErrorInfo, ReactNode } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import {
-  Environment,
-  Float,
-  Text,
-  useTexture,
-  Stars
-} from "@react-three/drei";
+import { Float, Stars } from "@react-three/drei";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Compass, Zap } from "lucide-react";
+import { Compass, Zap, Loader2 } from "lucide-react";
 import * as THREE from "three";
+
+// ============================================
+// ERROR BOUNDARY
+// ============================================
+class ErrorBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: ReactNode; fallback: ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(_: Error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error("3D Scene Error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+    return this.props.children;
+  }
+}
+
+// ============================================
+// LOADING COMPONENT
+// ============================================
+function LoadingScreen() {
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0a0a0f]">
+      <Loader2 className="w-12 h-12 text-[#60a5fa] animate-spin mb-4" />
+      <p className="text-muted-foreground text-sm tracking-widest uppercase">
+        Loading Silicon Prairie...
+      </p>
+    </div>
+  );
+}
+
+// ============================================
+// FALLBACK FOR WEBGL ERRORS
+// ============================================
+function WebGLFallback() {
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0a0a0f] p-8 text-center">
+      <h2 className="text-2xl font-bold text-[#60a5fa] mb-4">Silicon Prairie</h2>
+      <p className="text-muted-foreground mb-6">
+        3D experience requires WebGL. Please use a modern browser.
+      </p>
+      <Button onClick={() => window.location.href = "/"}>
+        Continue to Main Site
+      </Button>
+    </div>
+  );
+}
 
 // Colors from brand
 const BLUE_SILICON = "#60a5fa";
@@ -455,6 +505,13 @@ export default function Landing() {
   const [orbHovered, setOrbHovered] = useState(false);
   const [showUI, setShowUI] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Hide loading screen after scene initializes
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleOrbClick = () => {
     setScreen(2);
@@ -467,21 +524,41 @@ export default function Landing() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-[#0a0a0f]">
-      {/* Three.js Canvas */}
-      <Canvas
-        camera={{ fov: 60, near: 0.1, far: 200 }}
-        gl={{ antialias: true, alpha: false }}
-        className="absolute inset-0"
-      >
-        <Suspense fallback={null}>
-          <Scene
-            screen={screen}
-            onOrbClick={handleOrbClick}
-            orbHovered={orbHovered}
-            setOrbHovered={setOrbHovered}
-          />
-        </Suspense>
-      </Canvas>
+      {/* Three.js Canvas with Error Boundary */}
+      <ErrorBoundary fallback={<WebGLFallback />}>
+        <Canvas
+          camera={{ fov: 60, near: 0.1, far: 200 }}
+          gl={{ antialias: true, alpha: false }}
+          className="absolute inset-0"
+          onCreated={() => console.log("Canvas created")}
+        >
+          <Suspense fallback={null}>
+            <Scene
+              screen={screen}
+              onOrbClick={handleOrbClick}
+              orbHovered={orbHovered}
+              setOrbHovered={setOrbHovered}
+            />
+          </Suspense>
+        </Canvas>
+      </ErrorBoundary>
+
+      {/* Loading overlay - shows briefly while 3D initializes */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 flex items-center justify-center bg-[#0a0a0f] z-50"
+          >
+            <div className="text-center">
+              <div className="w-16 h-16 border-2 border-[#60a5fa]/30 border-t-[#60a5fa] rounded-full animate-spin mx-auto mb-4" />
+              <p className="text-muted-foreground text-xs tracking-widest uppercase">Entering Silicon Prairie</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Wind Audio */}
       <WindAudio playing={audioEnabled} />
