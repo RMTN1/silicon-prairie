@@ -250,7 +250,7 @@ export default function Landing() {
                     background: `linear-gradient(135deg, ${BLUE_SILICON}, #2563eb)`,
                     boxShadow: `0 0 30px ${BLUE_SILICON}44`,
                   }}
-                  onClick={() => (window.location.href = "/")}
+                  onClick={() => (window.location.href = "/home")}
                 >
                   <Zap className="w-5 h-5 mr-2" />
                   Enter Nexus
@@ -264,7 +264,7 @@ export default function Landing() {
                     color: GOLD_PRAIRIE,
                     background: `${GOLD_PRAIRIE}11`,
                   }}
-                  onClick={() => (window.location.href = "/#about")}
+                  onClick={() => (window.location.href = "/home#about")}
                 >
                   <Compass className="w-5 h-5 mr-2" />
                   Explore Prairie
