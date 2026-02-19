@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import heroPrairie from "@/assets/hero-prairie.jpg";
+import Grid3D from "@/components/Grid3D";
 
 const BLUE_SILICON = "#60a5fa";
 const GOLD_PRAIRIE = "#D4AF37";
@@ -56,73 +57,8 @@ export default function Landing() {
       <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-[#0a0a0f]/20 to-[#0a0a0f]/60" />
       <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0f]/40 via-transparent to-[#0a0a0f]/40" />
 
-      {/* ── 3D PERSPECTIVE GRID ── */}
-      {/*
-        The grid sits on the bottom half of the screen.
-        perspective + rotateX makes it look like it's lying flat,
-        receding away from the viewer into the horizon.
-        Two layers: a solid line grid + a glowing pulse layer.
-      */}
-      <div
-        className="absolute bottom-0 left-0 right-0 pointer-events-none"
-        style={{ height: "65%", perspective: "600px", perspectiveOrigin: "50% 0%" }}
-      >
-        {/* Base grid */}
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            transform: "rotateX(75deg)",
-            transformOrigin: "50% 0%",
-            backgroundImage: `
-              linear-gradient(${BLUE_SILICON}55 1.5px, transparent 1.5px),
-              linear-gradient(90deg, ${BLUE_SILICON}55 1.5px, transparent 1.5px)
-            `,
-            backgroundSize: "80px 80px",
-            maskImage:
-              "linear-gradient(to bottom, transparent 0%, black 25%, black 70%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to bottom, transparent 0%, black 25%, black 70%, transparent 100%)",
-          }}
-        />
-
-        {/* Glowing pulse layer – same grid, animating opacity */}
-        <motion.div
-          className="absolute inset-0"
-          animate={{ opacity: [0.3, 0.7, 0.3] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          style={{
-            transform: "rotateX(75deg)",
-            transformOrigin: "50% 0%",
-            backgroundImage: `
-              linear-gradient(${BLUE_SILICON}99 1.5px, transparent 1.5px),
-              linear-gradient(90deg, ${BLUE_SILICON}99 1.5px, transparent 1.5px)
-            `,
-            backgroundSize: "80px 80px",
-            filter: "blur(1px)",
-            maskImage:
-              "radial-gradient(ellipse 70% 80% at 50% 30%, black, transparent)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse 70% 80% at 50% 30%, black, transparent)",
-          }}
-        />
-
-        {/* Moving grid lines – simulates the grid rushing toward viewer */}
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            transform: "rotateX(75deg)",
-            transformOrigin: "50% 0%",
-            backgroundImage: `linear-gradient(${BLUE_SILICON}44 1.5px, transparent 1.5px)`,
-            backgroundSize: "80px 80px",
-            maskImage:
-              "linear-gradient(to bottom, transparent 0%, black 25%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to bottom, transparent 0%, black 25%, transparent 100%)",
-          }}
-          animate={{ backgroundPositionY: ["0px", "80px"] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-        />
-      </div>
+      {/* ── 3D Perspective Grid ── */}
+      <Grid3D />
 
       {/* ── Horizon glow behind orb ── */}
       <div
