@@ -10,30 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
 
     steps:
-      - name: Create and immediately merge PR
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Merge branch into main
         run: |
-          BRANCH="${{ github.ref_name }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Create PR (skip if one already exists for this branch)
-          PR_NUMBER=$(gh pr list --head "$BRANCH" --base main --json number --jq '.[0].number' --repo "${{ github.repository }}")
+          git fetch origin main
+          git checkout main
+          git merge --ff-only origin/${{ github.ref_name }} || \
+            git merge --squash origin/${{ github.ref_name }} && \
+            git commit -m "Auto-merge from ${{ github.ref_name }}"
 
-          if [ -z "$PR_NUMBER" ]; then
-            PR_NUMBER=$(gh pr create \
-              --base main \
-              --head "$BRANCH" \
-              --title "Auto: $BRANCH" \
-              --body "Automated merge from Claude session." \
-              --repo "${{ github.repository }}" \
-              --json number --jq '.number')
-          fi
-
-          # Merge immediately (squash)
-          gh pr merge "$PR_NUMBER" \
-            --squash \
-            --delete-branch \
-            --repo "${{ github.repository }}"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git push origin main
