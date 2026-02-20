@@ -10,9 +10,9 @@ interface Grid3DProps {
 }
 
 /**
- * Full-viewport 3D perspective grid.
- * The horizon sits at the vertical center of the viewport and the grid
- * recedes away from the viewer into the distance.
+ * Tron-style 3D perspective grid.
+ * Horizon at vertical center, grid recedes into infinite distance.
+ * Bright neon lines with dramatic glow.
  */
 export default function Grid3D({
   opacity = 1,
@@ -24,11 +24,7 @@ export default function Grid3D({
       className="pointer-events-none"
       style={{ position, top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, opacity }}
     >
-      {/*
-        The perspective container sits in the bottom half of the viewport.
-        perspectiveOrigin "50% 0%" places the vanishing point at the
-        top edge of this container — the vertical center of the screen.
-      */}
+      {/* ── Ground plane (bottom half) ─────────────────────────────────────── */}
       <div
         style={{
           position: "absolute",
@@ -36,81 +32,131 @@ export default function Grid3D({
           left: 0,
           right: 0,
           bottom: 0,
-          perspective: "600px",
+          perspective: "500px",
           perspectiveOrigin: "50% 0%",
         }}
       >
-        {/* ── Base grid ── */}
+        {/* Base grid — bright neon lines */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            transform: "rotateX(75deg)",
+            transform: "rotateX(80deg)",
             transformOrigin: "50% 0%",
             backgroundImage: `
-              linear-gradient(${color}55 1.5px, transparent 1.5px),
-              linear-gradient(90deg, ${color}55 1.5px, transparent 1.5px)
+              linear-gradient(${color} 2px, transparent 2px),
+              linear-gradient(90deg, ${color} 2px, transparent 2px)
             `,
-            backgroundSize: "80px 80px",
+            backgroundSize: "60px 60px",
+            filter: `drop-shadow(0 0 2px ${color}) drop-shadow(0 0 6px ${color})`,
             maskImage:
-              "linear-gradient(to bottom, transparent 0%, black 20%, black 75%, transparent 100%)",
+              "linear-gradient(to bottom, black 0%, black 60%, transparent 100%)",
             WebkitMaskImage:
-              "linear-gradient(to bottom, transparent 0%, black 20%, black 75%, transparent 100%)",
+              "linear-gradient(to bottom, black 0%, black 60%, transparent 100%)",
           }}
         />
 
-        {/* ── Glowing pulse layer ── */}
+        {/* Glow pulse layer */}
         <motion.div
-          animate={{ opacity: [0.25, 0.6, 0.25] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ opacity: [0.4, 0.8, 0.4] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           style={{
             position: "absolute",
             inset: 0,
-            transform: "rotateX(75deg)",
+            transform: "rotateX(80deg)",
             transformOrigin: "50% 0%",
             backgroundImage: `
-              linear-gradient(${color}99 1.5px, transparent 1.5px),
-              linear-gradient(90deg, ${color}99 1.5px, transparent 1.5px)
+              linear-gradient(${color}cc 2px, transparent 2px),
+              linear-gradient(90deg, ${color}cc 2px, transparent 2px)
             `,
-            backgroundSize: "80px 80px",
-            filter: "blur(1px)",
+            backgroundSize: "60px 60px",
+            filter: `blur(3px) drop-shadow(0 0 8px ${color})`,
             maskImage:
-              "radial-gradient(ellipse 70% 80% at 50% 20%, black, transparent)",
+              "radial-gradient(ellipse 80% 60% at 50% 10%, black, transparent)",
             WebkitMaskImage:
-              "radial-gradient(ellipse 70% 80% at 50% 20%, black, transparent)",
+              "radial-gradient(ellipse 80% 60% at 50% 10%, black, transparent)",
           }}
         />
 
-        {/* ── Moving lines — grid rushing toward viewer ── */}
+        {/* Moving lines — rushing toward viewer */}
         <motion.div
           style={{
             position: "absolute",
             inset: 0,
-            transform: "rotateX(75deg)",
+            transform: "rotateX(80deg)",
             transformOrigin: "50% 0%",
-            backgroundImage: `linear-gradient(${color}44 1.5px, transparent 1.5px)`,
-            backgroundSize: "80px 80px",
+            backgroundImage: `linear-gradient(${color}88 2px, transparent 2px)`,
+            backgroundSize: "60px 60px",
+            filter: `drop-shadow(0 0 4px ${color})`,
             maskImage:
-              "linear-gradient(to bottom, transparent 0%, black 20%, transparent 100%)",
+              "linear-gradient(to bottom, black 0%, transparent 40%)",
             WebkitMaskImage:
-              "linear-gradient(to bottom, transparent 0%, black 20%, transparent 100%)",
+              "linear-gradient(to bottom, black 0%, transparent 40%)",
           }}
-          animate={{ backgroundPositionY: ["0px", "80px"] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          animate={{ backgroundPositionY: ["0px", "60px"] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
         />
       </div>
 
-      {/* ── Horizon glow at the center line ── */}
+      {/* ── Sky plane (top half, subtle) ───────────────────────────────────── */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "50%",
+          perspective: "500px",
+          perspectiveOrigin: "50% 100%",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            transform: "rotateX(-80deg)",
+            transformOrigin: "50% 100%",
+            backgroundImage: `
+              linear-gradient(${color}33 1px, transparent 1px),
+              linear-gradient(90deg, ${color}33 1px, transparent 1px)
+            `,
+            backgroundSize: "60px 60px",
+            maskImage:
+              "linear-gradient(to top, black 0%, transparent 50%)",
+            WebkitMaskImage:
+              "linear-gradient(to top, black 0%, transparent 50%)",
+          }}
+        />
+      </div>
+
+      {/* ── Horizon glow line ──────────────────────────────────────────────── */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: 0,
+          right: 0,
+          height: "2px",
+          background: color,
+          boxShadow: `
+            0 0 20px 4px ${color},
+            0 0 60px 10px ${color}88,
+            0 0 120px 20px ${color}44
+          `,
+        }}
+      />
+
+      {/* ── Ambient horizon glow ───────────────────────────────────────────── */}
       <div
         style={{
           position: "absolute",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "80vw",
-          height: "120px",
-          background: `radial-gradient(ellipse, ${color}22 0%, transparent 70%)`,
-          filter: "blur(18px)",
+          width: "100%",
+          height: "200px",
+          background: `radial-gradient(ellipse 100% 100% at 50% 50%, ${color}15 0%, transparent 70%)`,
+          filter: "blur(30px)",
         }}
       />
     </div>
