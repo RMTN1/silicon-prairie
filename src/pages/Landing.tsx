@@ -318,15 +318,15 @@ export default function Landing() {
         )}
       </AnimatePresence>
 
-      {/* ── Corner branding ─────────────────────────────────────────────────── */}
+      {/* ── Top-center branding ─────────────────────────────────────────────── */}
       <motion.div
-        className="absolute top-4 left-4 flex items-center gap-2 text-white/50 text-sm pointer-events-none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: stage >= 5 ? 1 : 0 }}
+        className="absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-3 text-white/70 text-lg tracking-wider pointer-events-none"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: stage >= 5 ? 1 : 0, y: stage >= 5 ? 0 : -10 }}
         transition={{ duration: 0.8 }}
       >
-        <img src="/favicon.svg" alt="Logo" className="w-6 h-6 opacity-60" />
-        <span>Silicon Prairie</span>
+        <img src="/favicon.svg" alt="Logo" className="w-7 h-7 opacity-70" />
+        <span className="font-light uppercase">Silicon Prairie</span>
       </motion.div>
 
       {/* ── Flash overlay — covers everything on exit ────────────────────────── */}
