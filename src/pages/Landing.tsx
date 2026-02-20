@@ -40,7 +40,7 @@ export default function Landing() {
   const orbColor = orbHovered ? theme.orb : theme.grid;
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden bg-black">
+    <div className="relative w-full min-h-screen overflow-hidden" style={{ background: "linear-gradient(to bottom, #a8c4d4, #c8dce8)" }}>
 
       {/* ── 3D Grid — Tron landscape ─────────────────────────────────────────── */}
       <motion.div
@@ -55,35 +55,9 @@ export default function Landing() {
           scale: { duration: 0.95, ease: "easeIn" },
         }}
       >
-        <Grid3D color={theme.grid} position="absolute" />
+        <Grid3D position="absolute" />
       </motion.div>
 
-      {/* ── Horizon glow ─────────────────────────────────────────────────────── */}
-      <motion.div
-        className="absolute left-1/2 -translate-x-1/2 pointer-events-none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: stage >= 1 ? 0.8 : 0 }}
-        transition={{ duration: 1.5 }}
-        style={{
-          top: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "100vw",
-          height: "4px",
-          background: `linear-gradient(90deg, transparent, ${theme.grid}, transparent)`,
-          boxShadow: `0 0 60px 20px ${theme.grid}66, 0 0 120px 40px ${theme.grid}33`,
-        }}
-      />
-
-      {/* ── Scan line ────────────────────────────────────────────────────────── */}
-      <motion.div
-        className="absolute left-0 right-0 h-[1px] pointer-events-none"
-        style={{
-          background: `linear-gradient(90deg, transparent, ${theme.grid}88, transparent)`,
-          boxShadow: `0 0 20px ${theme.grid}`,
-        }}
-        animate={{ top: ["0%", "100%"] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-      />
 
       {/* ── Central Orb ──────────────────────────────────────────────────────── */}
       <motion.div
@@ -162,12 +136,12 @@ export default function Landing() {
 
       {/* ── Top-center branding (truly centered) ─────────────────────────────── */}
       <motion.div
-        className="absolute top-6 inset-x-0 flex justify-center items-center gap-3 text-white/70 text-lg tracking-wider pointer-events-none"
+        className="absolute top-6 inset-x-0 flex justify-center items-center gap-3 text-slate-600 text-lg tracking-wider pointer-events-none"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: stage >= 3 ? 1 : 0, y: stage >= 3 ? 0 : -10 }}
         transition={{ duration: 0.8 }}
       >
-        <img src="/favicon.svg" alt="Logo" className="w-7 h-7 opacity-70" />
+        <img src="/favicon.svg" alt="Logo" className="w-7 h-7" />
         <span className="font-light uppercase">Silicon Prairie</span>
       </motion.div>
 
