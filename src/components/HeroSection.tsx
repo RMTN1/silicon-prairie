@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Zap } from "lucide-react";
 import InteractiveNode from "./InteractiveNode";
-import heroPrairie from "@/assets/hero-prairie.jpg";
 
 const nodes = [
   { type: "funder" as const, x: 20, y: 35, label: "AgriVenture Capital", delay: 0.8 },
@@ -18,25 +17,6 @@ const nodes = [
 const HeroSection = () => {
   return (
     <section id="hero" className="relative min-h-screen overflow-hidden">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0">
-        <img
-          src={heroPrairie}
-          alt="Digital Prairie"
-          className="w-full h-full object-cover object-center"
-        />
-        <div className="absolute inset-0 gradient-hero-overlay" />
-        <div className="absolute inset-0 grid-overlay opacity-50" />
-        
-        {/* Scan line effect */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div
-            className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"
-            animate={{ y: ["0vh", "100vh"] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-          />
-        </div>
-      </div>
 
       {/* Interactive Nodes */}
       <div className="absolute inset-0 top-32">

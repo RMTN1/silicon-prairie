@@ -27,9 +27,9 @@ const Index = () => {
   const orbColor = orbHovered ? theme.orb : theme.grid;
 
   return (
-    <div className="min-h-screen bg-black overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden" style={{ background: "linear-gradient(to bottom, #a8c4d4, #c8dce8)" }}>
       {/* ── 3D Grid background ─────────────────────────────────────────────── */}
-      <Grid3D opacity={0.45} color={theme.grid} />
+      <Grid3D opacity={0.6} />
 
       {/* ── Header: back button (left) + title (center) ────────────────────── */}
       <motion.header
@@ -41,15 +41,15 @@ const Index = () => {
         {/* Back button — top left */}
         <a
           href="/"
-          className="absolute left-6 top-1/2 -translate-y-1/2 flex items-center gap-2 text-white/60 hover:text-white/90 transition-colors group"
+          className="absolute left-6 top-1/2 -translate-y-1/2 flex items-center gap-2 text-slate-600 hover:text-slate-800 transition-colors group"
         >
           <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
           <span className="text-sm hidden sm:inline">Back</span>
         </a>
 
         {/* Silicon Prairie — top center */}
-        <div className="flex items-center justify-center gap-3 text-white/70 text-lg tracking-wider">
-          <img src="/favicon.svg" alt="Logo" className="w-7 h-7 opacity-70" />
+        <div className="flex items-center justify-center gap-3 text-slate-600 text-lg tracking-wider">
+          <img src="/favicon.svg" alt="Logo" className="w-7 h-7" />
           <span className="font-light uppercase">Silicon Prairie</span>
         </div>
       </motion.header>
@@ -99,7 +99,7 @@ const Index = () => {
 
         {/* Orb label */}
         <motion.p
-          className="absolute mt-44 md:mt-52 text-white/50 text-xs tracking-widest uppercase"
+          className="absolute mt-44 md:mt-52 text-slate-500 text-xs tracking-widest uppercase"
           initial={{ opacity: 0 }}
           animate={{ opacity: orbHovered ? 1 : 0.6 }}
         >
