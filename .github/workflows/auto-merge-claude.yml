@@ -12,21 +12,21 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout full history
+      - name: Checkout main
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Merge branch into main
+      - name: Merge claude branch into main
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git fetch origin main
-          git checkout main
-          git merge --ff-only origin/${{ github.ref_name }} || \
-            git merge --squash origin/${{ github.ref_name }} && \
-            git commit -m "Auto-merge from ${{ github.ref_name }}"
+          git fetch origin ${{ github.ref_name }}
+
+          git merge origin/${{ github.ref_name }} --no-ff \
+            -m "Auto-merge from ${{ github.ref_name }}"
 
           git push origin main
