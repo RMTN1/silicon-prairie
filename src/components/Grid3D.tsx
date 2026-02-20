@@ -8,178 +8,94 @@ interface Grid3DProps {
 }
 
 /**
- * 3D corridor grid — white lines on muted cyan background.
- * Floor, ceiling, and side walls create an infinite room feel.
+ * 3D floor grid — white lines on muted cyan background.
+ * Grid extends close to viewer with optimized perspective.
  */
 export default function Grid3D({
   opacity = 1,
   position = "fixed",
 }: Grid3DProps) {
-  const lineColor = "rgba(255, 255, 255, 0.7)";
-  const lineColorBright = "rgba(255, 255, 255, 0.9)";
+  const lineColor = "rgba(255, 255, 255, 0.75)";
+  const lineColorBright = "rgba(255, 255, 255, 0.95)";
 
   return (
     <div
       className="pointer-events-none"
       style={{ position, top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, opacity }}
     >
-      {/* ── Floor (bottom half) ────────────────────────────────────────────── */}
+      {/* ── Floor Grid (bottom 60% of screen, extends toward viewer) ────────── */}
       <div
         style={{
           position: "absolute",
-          top: "50%",
+          top: "40%",
           left: 0,
           right: 0,
           bottom: 0,
-          perspective: "800px",
-          perspectiveOrigin: "50% 0%",
+          perspective: "600px",
+          perspectiveOrigin: "50% -10%",
         }}
       >
+        {/* Base floor grid — white lines, smaller cells for less distortion */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            transform: "rotateX(85deg)",
+            transform: "rotateX(78deg)",
             transformOrigin: "50% 0%",
             backgroundImage: `
               linear-gradient(${lineColor} 1px, transparent 1px),
               linear-gradient(90deg, ${lineColor} 1px, transparent 1px)
             `,
-            backgroundSize: "50px 50px",
+            backgroundSize: "38px 38px",
           }}
         />
-        {/* Floor glow pulse */}
+
+        {/* Floor glow pulse — subtle breathing effect */}
         <motion.div
-          animate={{ opacity: [0.3, 0.6, 0.3] }}
+          animate={{ opacity: [0.35, 0.65, 0.35] }}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           style={{
             position: "absolute",
             inset: 0,
-            transform: "rotateX(85deg)",
+            transform: "rotateX(78deg)",
             transformOrigin: "50% 0%",
             backgroundImage: `
               linear-gradient(${lineColorBright} 1px, transparent 1px),
               linear-gradient(90deg, ${lineColorBright} 1px, transparent 1px)
             `,
-            backgroundSize: "50px 50px",
-            filter: "blur(1px)",
-            maskImage: "radial-gradient(ellipse 60% 50% at 50% 20%, black, transparent)",
-            WebkitMaskImage: "radial-gradient(ellipse 60% 50% at 50% 20%, black, transparent)",
+            backgroundSize: "38px 38px",
+            filter: "blur(0.5px)",
+            maskImage: "radial-gradient(ellipse 65% 45% at 50% 15%, black, transparent)",
+            WebkitMaskImage: "radial-gradient(ellipse 65% 45% at 50% 15%, black, transparent)",
           }}
         />
       </div>
 
-      {/* ── Ceiling (top half) ─────────────────────────────────────────────── */}
+      {/* ── Horizon line ─────────────────────────────────────────────────────── */}
       <div
         style={{
           position: "absolute",
-          top: 0,
+          top: "40%",
           left: 0,
           right: 0,
-          height: "50%",
-          perspective: "800px",
-          perspectiveOrigin: "50% 100%",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            transform: "rotateX(-85deg)",
-            transformOrigin: "50% 100%",
-            backgroundImage: `
-              linear-gradient(${lineColor} 1px, transparent 1px),
-              linear-gradient(90deg, ${lineColor} 1px, transparent 1px)
-            `,
-            backgroundSize: "50px 50px",
-            maskImage: "linear-gradient(to top, black 0%, transparent 70%)",
-            WebkitMaskImage: "linear-gradient(to top, black 0%, transparent 70%)",
-          }}
-        />
-      </div>
-
-      {/* ── Left wall ──────────────────────────────────────────────────────── */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "50%",
-          height: "100%",
-          perspective: "800px",
-          perspectiveOrigin: "100% 50%",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            transform: "rotateY(85deg)",
-            transformOrigin: "100% 50%",
-            backgroundImage: `
-              linear-gradient(${lineColor} 1px, transparent 1px),
-              linear-gradient(90deg, ${lineColor} 1px, transparent 1px)
-            `,
-            backgroundSize: "50px 50px",
-            maskImage: "linear-gradient(to right, black 0%, transparent 60%)",
-            WebkitMaskImage: "linear-gradient(to right, black 0%, transparent 60%)",
-          }}
-        />
-      </div>
-
-      {/* ── Right wall ─────────────────────────────────────────────────────── */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          width: "50%",
-          height: "100%",
-          perspective: "800px",
-          perspectiveOrigin: "0% 50%",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            transform: "rotateY(-85deg)",
-            transformOrigin: "0% 50%",
-            backgroundImage: `
-              linear-gradient(${lineColor} 1px, transparent 1px),
-              linear-gradient(90deg, ${lineColor} 1px, transparent 1px)
-            `,
-            backgroundSize: "50px 50px",
-            maskImage: "linear-gradient(to left, black 0%, transparent 60%)",
-            WebkitMaskImage: "linear-gradient(to left, black 0%, transparent 60%)",
-          }}
-        />
-      </div>
-
-      {/* ── Horizon line ───────────────────────────────────────────────────── */}
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: 0,
-          right: 0,
-          height: "1px",
-          background: "rgba(255, 255, 255, 0.5)",
-          boxShadow: "0 0 20px 2px rgba(255, 255, 255, 0.3)",
+          height: "1.5px",
+          background: "rgba(255, 255, 255, 0.6)",
+          boxShadow: "0 0 15px 2px rgba(255, 255, 255, 0.25)",
         }}
       />
 
-      {/* ── Center ambient glow ────────────────────────────────────────────── */}
+      {/* ── Center ambient glow ──────────────────────────────────────────────── */}
       <div
         style={{
           position: "absolute",
-          top: "50%",
+          top: "40%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "60%",
-          height: "60%",
-          background: "radial-gradient(ellipse, rgba(255,255,255,0.08) 0%, transparent 70%)",
-          filter: "blur(40px)",
+          width: "70%",
+          height: "80%",
+          background: "radial-gradient(ellipse 100% 80% at 50% 30%, rgba(255,255,255,0.06) 0%, transparent 70%)",
+          filter: "blur(50px)",
+          pointerEvents: "none",
         }}
       />
     </div>
