@@ -229,7 +229,6 @@ export default function Landing() {
       {/* ── Central Orb ─────────────────────────────────────────────────────── */}
       <motion.div
         className="absolute inset-0 flex items-center justify-center"
-        style={{ paddingBottom: "8vh" }}
         initial={{ opacity: 0, scale: 0.6 }}
         animate={{ opacity: stage >= 4 ? 1 : 0, scale: stage >= 4 ? 1 : 0.6 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -241,22 +240,22 @@ export default function Landing() {
           whileHover={{ scale: 1.12 }}
           whileTap={{ scale: 0.92 }}
           disabled={exiting}
-          className="relative w-36 h-36 md:w-48 md:h-48 rounded-full cursor-pointer focus:outline-none"
+          className="relative w-24 h-24 md:w-32 md:h-32 rounded-full cursor-pointer focus:outline-none"
           style={{
             background: `radial-gradient(circle at 35% 35%, ${orbHovered ? theme.orb : theme.grid}, ${orbHovered ? "#7a3a10" : "#1a3070"})`,
             boxShadow: `
-              0 0 60px ${orbColor}88,
-              0 0 120px ${orbColor}44,
-              inset 0 0 40px rgba(255,255,255,0.15)
+              0 0 40px ${orbColor}88,
+              0 0 80px ${orbColor}44,
+              inset 0 0 30px rgba(255,255,255,0.15)
             `,
             transition: "background 0.4s ease, box-shadow 0.4s ease",
           }}
         >
           <div
-            className="absolute inset-4 rounded-full"
+            className="absolute inset-3 rounded-full"
             style={{ background: "radial-gradient(circle at 38% 35%, rgba(255,255,255,0.45), transparent 55%)" }}
           />
-          <Sparkles className="absolute inset-0 m-auto w-10 h-10 md:w-14 md:h-14 text-white/70" />
+          <Sparkles className="absolute inset-0 m-auto w-8 h-8 md:w-10 md:h-10 text-white/70" />
 
           <motion.span
             className="absolute inset-0 rounded-full border"
@@ -280,7 +279,6 @@ export default function Landing() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="absolute inset-0 flex items-center justify-center pointer-events-none"
-              style={{ paddingBottom: "8vh" }}
             >
               {Array.from({ length: 14 }).map((_, i) => (
                 <motion.div
@@ -302,21 +300,6 @@ export default function Landing() {
           )}
         </AnimatePresence>
       </motion.div>
-
-      {/* ── Hint text ───────────────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {stage >= 5 && !exiting && (
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-            className="absolute bottom-16 left-1/2 -translate-x-1/2 text-white/60 text-xs md:text-sm tracking-widest uppercase pointer-events-none"
-          >
-            {orbHovered ? "Enter Silicon Prairie" : "Approach the light"}
-          </motion.p>
-        )}
-      </AnimatePresence>
 
       {/* ── Top-center branding ─────────────────────────────────────────────── */}
       <motion.div
