@@ -27,7 +27,7 @@ const Index = () => {
   const orbColor = orbHovered ? theme.orb : theme.grid;
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-black overflow-x-hidden">
       {/* ── 3D Grid background ─────────────────────────────────────────────── */}
       <Grid3D opacity={0.45} color={theme.grid} />
 
